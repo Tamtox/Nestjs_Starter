@@ -1,47 +1,48 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
   CreateUserBodyDto,
+  ListUsersQueryDto,
+  ResetUserPasswordBodyDto,
+  SignInBodyDto,
   SignUpBodyDto,
   UpdateUserBodyDto,
 } from './dto/user.dtos';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @Post('sign-up')
-  signUp(@Body() signUpBodyDto: SignUpBodyDto) {
-    return this.usersService.create(signUpBodyDto);
-  }
-  @Post()
-  create(@Body() createUserDto: CreateUserBodyDto) {
-    return this.usersService.create(createUserDto);
+  @Post('sign-in') // Sign In ----------------------------------------------------------------------------------------------------------------
+  signIn(@Body() body: SignInBodyDto) {
+    return this.usersService.signIn(body);
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Post('sign-up') // Sign Up ----------------------------------------------------------------------------------------------------------------
+  signUp(@Body() body: SignUpBodyDto) {
+    return this.usersService.signUp(body);
+  }
+  @Post() // Create User --------------------------------------------------------------------------------------------------------------------
+  createUser(@Body() body: CreateUserBodyDto) {
+    return this.usersService.createUser(body);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Patch(':id') // Update User ---------------------------------------------------------------------------------------------------------------
+  updateUser(@Body() body: UpdateUserBodyDto) {
+    return this.usersService.updateUser(body);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserBodyDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Get(':id/reset-password') // Reset User Password -----------------------------------------------------------------------------------------
+  resetUserPassword(@Body() body: ResetUserPasswordBodyDto) {
+    const users = this.usersService.resetUserPassword(body);
+    return users;
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Get(':id') // Get User ------------------------------------------------------------------------------------------------------------------
+  getUser(@Query('id') id: string) {
+    const users = this.usersService.listUsers({ id });
+    return users;
+  }
+  @Get() // List Users ---------------------------------------------------------------------------------------------------------------------
+  listUsers(@Query() query: ListUsersQueryDto) {
+    const users = this.usersService.listUsers(query);
+    return users;
   }
 }

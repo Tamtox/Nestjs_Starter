@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  CreateUserBodyDto,
+  ListUsersQueryDto,
+  ResetUserPasswordBodyDto,
+  SignInBodyDto,
+  UpdateUserBodyDto,
+} from './dto/user.dtos';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  signIn(body: SignInBodyDto) {
+    console.log(body);
+    return 'Sign in';
   }
-
-  findAll() {
-    return `This action returns all users`;
+  signUp(body: SignInBodyDto) {
+    console.log(body);
+    return 'Sign up';
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  createUser(body: CreateUserBodyDto) {
+    console.log(body);
   }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  updateUser(body: UpdateUserBodyDto) {
+    console.log(body);
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  listUsers(queries: ListUsersQueryDto) {
+    console.log(queries);
+    return [
+      { id: 1, name: 'John Doe' },
+      { id: 2, name: 'Alice Caeiro' },
+      { id: 3, name: 'Who Knows' },
+    ];
+  }
+  resetUserPassword(body: ResetUserPasswordBodyDto) {
+    console.log(body);
+    return 'Reset user password';
   }
 }
